@@ -1,0 +1,54 @@
+﻿@page "/edit-user-project/{Upid}"
+@layout MainLayout
+@inherits Timereg.Pages.EditUserProjectComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Timereg.Models.Timeregdata
+@using Timereg.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm TItem="Timereg.Models.Timeregdata.UserProject" Data="@userproject" Visible="@(userproject != null)" Submit="@Form0Submit">
+                    <ChildContent>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Project" Component="projectid" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown Data="@getProjectsResult" TextProperty="projectname" ValueProperty="id" Placeholder="Choose Project" style="width: 100%" @bind-Value="@(userproject.projectid)" Name="Projectid">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Employee" Component="userid" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown Data="@getEmployeesResult" TextProperty="username" ValueProperty="userid" Placeholder="Choose Employee" style="display: block; width: 100%" @bind-Value="@(userproject.userid)" Name="Userid">
+                                </RadzenDropDown>
+                                <RadzenRequiredValidator Component="Userid" Text="userid is required" style="position: absolute" DefaultValue="0">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col offset-sm-3">
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Click="@Button2Click">
+                                </RadzenButton>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

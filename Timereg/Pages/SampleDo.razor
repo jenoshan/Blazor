@@ -1,0 +1,45 @@
+﻿
+@page "/sampleDo"
+@layout MainLayout
+@inherits Timereg.Pages.SampleComponent
+@using Radzen
+@using Radzen.Blazor
+@using Timereg.Models.Timeregdata
+@using Timereg.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenHeading Size="H1" Text="Time Per user">
+        </RadzenHeading>
+        <div class="row">
+            <div class="col-md-12">
+                @*<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
+                </RadzenButton>*@
+                <RadzenGrid @ref="grid0" AllowFiltering="true" AllowPaging="true" AllowSorting="true" Data="@getProjectsResult" TItem="Timereg.Models.Timeregdata.VTimeusedPeruser" >
+                    <Columns>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.VTimeusedPeruser" Property="workyear" Title="workyear">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.VTimeusedPeruser" Property="workmonth" Title="workmonth">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.VTimeusedPeruser" Property="Projectname" Title="Projectname">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.VTimeusedPeruser" Property="projectcode" Title="projectcode">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.VTimeusedPeruser" Property="username" Title="username">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.VTimeusedPeruser" Property="Totalminuts" Title="Totalminuts">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.VTimeusedPeruser" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="timeregModelsTimeregdataProject">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" >
+                                </RadzenButton>
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

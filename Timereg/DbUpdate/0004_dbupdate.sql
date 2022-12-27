@@ -1,0 +1,1 @@
+alter table invoice add column imgname varchar(100);

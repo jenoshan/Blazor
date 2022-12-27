@@ -1,0 +1,22 @@
+﻿@page "/index"
+@inject Timereg.Services.IModelService Modal
+@using Timereg.Data
+@using Timereg.Services
+@inject IJSRuntime jsRuntime
+@attribute [Authorize]
+
+<h1>Sample chart </h1>
+<button @onclick="GeneratePieChartBlazor" class="btn btn-primary">Show Modal</button>
+<div id="chartdiv123" style="background-color:honeydew"></div>
+
+
+@code{
+    SampleService sampleService = new SampleService();
+    List<Sample> samples = new List<Sample>();
+
+    private async Task GeneratePieChartBlazor()
+    {
+        samples =await sampleService.ProdectList();
+        await jsRuntime.InvokeVoidAsync("createChart", samples);
+    }
+}

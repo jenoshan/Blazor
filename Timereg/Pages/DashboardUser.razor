@@ -1,0 +1,133 @@
+﻿
+@page "/Dashboarduser"
+@layout MainLayout
+@inherits Timereg.Pages.DashboardUserComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Timereg.Models.Timeregdata
+@using Timereg.Models
+@using Microsoft.AspNetCore.Authorization
+
+
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+
+            <RadzenHeading Size="H2" Text=@yeartxt>
+            </RadzenHeading>
+            <RadzenDropDown AllowClear="true" TValue="int" @bind-Value="YearId"
+                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                            FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                            Data="@Years" TextProperty="Yearname" ValueProperty="Yearid" class="black"
+                            Style="margin-left: 15px;" /><br />
+
+
+            @if (monthResults != null)
+            {
+
+                <RadzenDropDown AllowClear="true" TValue="int" @bind-Value="MonthId"
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                Data="@monthResults" TextProperty="MonthName" ValueProperty="MonthNum" class="black"
+                                Style="margin-left: 15px;" /><br />
+
+            }
+            <RadzenDropDown AllowClear="true" TValue="int" @bind-Value="companyid"
+                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                            FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                            Data="@getCompany" TextProperty="companyname" ValueProperty="companyid" class="black"
+                            Style="margin-left: 15px;" />
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+                @if (Weeks != null)
+                {
+
+                    <RadzenDropDown AllowClear="true" TValue="int" @bind-Value="Weekno"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                    Data="@Weeks" TextProperty="week" ValueProperty="weekid" class="black"
+                                    Style="margin-left: 15px;" /><br />
+                }
+            </div>
+            <div class="col-md-4">
+                <RadzenButton id="btn btn-warning" Icon="autorenew" style="width: 150px;float :right;" Text="Eksport" Click="@downloadReport">
+                </RadzenButton>
+            </div>
+        </div>
+        <hr />
+        <div class="tabinator">
+            <div id="chartdiv1" class="chartsh"></div>
+        </div>
+        <hr />
+
+
+
+        <div class="row">
+            <div class="col-md-5 col-sm-12">
+                <h4> Arbeidstimene for arbeidstaker på periode @MontStr</h4>
+
+                <RadzenGrid @ref="grid02" AllowFiltering="true" AllowPaging="true" AllowSorting="true" Data="@getTimeusedsResult"
+                            TItem="Timereg.Data.VUserWithTimeVM" RowSelect="@Grid0RowSelect2" RowRender="@RowRender">
+                    <Columns>
+                        <RadzenGridColumn TItem="Timereg.Data.VUserWithTimeVM" Property="username" Title="administrator">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Data.VUserWithTimeVM" Property="UserTime" Title="Timer" Type="decimal">
+                            <Template Context="data">
+                                @if (data.IsApproved)
+                                {
+                                    <span style='background-color: green;'>@data.UserTime</span>
+                                }
+                                else
+                                {
+                                    <span>@data.UserTime</span>
+                                }
+                            </Template>
+                        </RadzenGridColumn>
+
+                    </Columns>
+                </RadzenGrid>
+            </div>
+            <div class="col-md-7 col-sm-12 ">
+                @*<div>
+                                        <AuthorizeView Policy="IsAdmin">
+                                            <Authorized>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label> Godkjenn prosjekt timene</label>
+                                                    </div>  <div class="col-md-1">
+                                                    <RadzenSwitch @bind-Value=@Approved Style="margin-bottom: 20px" />
+                                                    </div> </div>
+                    </Authorized>
+                                        </AuthorizeView>
+                    </div>*@
+
+                @*<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
+                    </RadzenButton>*@
+                <RadzenGrid @ref="Timegrid02" AllowFiltering="true" AllowPaging="true" AllowSorting="true" Data="@getUserTime2" TItem="Timereg.Models.Timeregdata.VTimeusedPeruser">
+                    <Columns>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.VTimeusedPeruser" Property="projectname" Title="Project">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.VTimeusedPeruser" Property="totalminuts" Title="Timer">
+                            <Template Context="data">
+                                @((Math.Floor(100*data.totalminuts/60.00))/100)
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>
+@code{
+    void RowRender(RowRenderEventArgs<Timereg.Data.VUserWithTimeVM> args)
+    {
+        if (args.Data.IsApproved)
+            args.Attributes.Add("style", "background-color: green;");
+    }
+}

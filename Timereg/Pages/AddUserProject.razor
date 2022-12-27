@@ -1,0 +1,56 @@
+﻿@page "/add-user-project"
+@layout MainLayout
+@inherits Timereg.Pages.AddUserProjectComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Timereg.Models.Timeregdata
+@using Timereg.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm Data="@userproject" Visible="@(userproject != null)" TItem="Timereg.Models.Timeregdata.UserProject" Submit="@Form0Submit">
+                    <ChildContent>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Project" Component="projectid" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown Data="@getProjectsResult" TextProperty="projectname" AllowFiltering="true" AllowClear="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                ValueProperty="id" Placeholder="Choose Project" style="width: 100%" @bind-Value="@(userproject.projectid)"
+                                                Name="Projectid">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Employee" Component="userid" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown Data="@getEmployeesResult" TextProperty="username" ValueProperty="userid" Placeholder="Choose Employee" style="display: block; width: 100%" @bind-Value="@(userproject.userid)" Name="Userid">
+                                </RadzenDropDown>
+                                <RadzenRequiredValidator Component="Userid" Text="userid is required" style="position: absolute" DefaultValue="0">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col offset-sm-3">
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Click="@Button2Click">
+                                </RadzenButton>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

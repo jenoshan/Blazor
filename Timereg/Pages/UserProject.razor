@@ -1,0 +1,44 @@
+﻿@page "/user-project"
+@layout MainLayout
+@inherits Timereg.Pages.UserProjectComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Timereg.Models.Timeregdata
+@using Timereg.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenHeading Size="H1" Text="User Project">
+        </RadzenHeading>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
+                </RadzenButton>
+                <RadzenGrid @ref="grid0" AllowFiltering="true" AllowPaging="true" AllowSorting="true" Data="@getUserProjectsResult" TItem="Timereg.Models.Timeregdata.UserProject" RowSelect="@Grid0RowSelect">
+                    <Columns> 
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.UserProject" Property="projectid" SortProperty="Project.projectname" FilterProperty="Project.projectname" Title="Project">
+                            <Template Context="data">
+                                @(data.Project?.projectname)
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.UserProject" Property="userid" SortProperty="Employee.username" FilterProperty="Employee.username" Title="Employee">
+                            <Template Context="data">
+                                @(data.Employee?.username)
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.UserProject" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="timeregModelsTimeregdataUserProject">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, timeregModelsTimeregdataUserProject))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

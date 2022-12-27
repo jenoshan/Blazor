@@ -1,0 +1,99 @@
+﻿@page "/"
+@namespace Timereg.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Radzen
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time registration</title>
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/default.css" />
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+    <link href="/css/blazored-modalcss.css" rel="stylesheet" />
+    <link href="assets/css/styles.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin="" />
+    <link href="/assets/css/components.css" rel="stylesheet" />
+    @*<link href="/assets/bundles/morris/morris.css" rel="stylesheet" />*@
+
+
+
+</head>
+<body>
+    <app>
+        <component type="typeof(App)" render-mode="Server" />
+    </app>
+
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+
+    <script src="_framework/blazor.server.js"></script>
+
+    <script src="/assets/bundles/echarts.js"></script>
+    @*<script src="~/assets/bundles/morris/morris.min.js"></script>
+        <script type="text/javascript">
+            console.log(Morris);
+        </script>*@
+    <script src="/assets/bundles/morris/raphael-min.js"></script>
+    <script src="/assets/bundles/dashboard.js"></script>
+
+    <script src="/js/PrintAreaScript.js"></script>
+
+    <!-- new chart -->
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/plugins/sunburst.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    @*<script src="~/js/Chart.js"></script>
+        <script src="~/js/NestedChart.js"></script>*@
+    <script src="/js/UserPieChart.js"></script>
+    <script src="~/js/PieOfPieChart.js"></script>
+
+    <script src="~/js/toggle.js"></script>
+    @* <script src="~/js/DataSAmple.js"></script>*@
+    <!-- Blazor charts -->
+    <!-- Here I'm referencing the static resources from the library -->
+    <!--  In case you need another version of any of the included javascript files, you can adjust the script tags to include the version you need, e.g. from a CDN or your wwwroot directory. -->
+    <!-- Since ChartJs is dependent on moment.js, it is important to first include the reference to moment.js and then to ChartJs -->
+    <!-- Reference the included moment.js javascript file. -->
+    <!--<script src="_content/ChartJs.Blazor/moment-with-locales.min.js" type="text/javascript" language="javascript"></script>-->
+    <!-- Reference the included ChartJs javascript file. -->
+    <!--<script src="_content/ChartJs.Blazor/Chart.min.js" type="text/javascript" language="javascript"></script>-->
+    <!-- This is the glue between the C# code and the ChartJs charts -->
+    <!--<script src="_content/ChartJs.Blazor/ChartJsBlazorInterop.js" type="text/javascript" language="javascript"></script>-->
+    <!-- Some styling -->
+    <!--<link rel="stylesheet" href="_content/ChartJs.Blazor/ChartJSBlazor.css" />-->
+    <!-- OPTIONAL: some local interop -->
+    <!--<script src="SampleInterop.js" type="text/javascript" language="JavaScript"></script>-->
+
+
+
+</body>
+</html>

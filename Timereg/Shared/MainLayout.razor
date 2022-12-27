@@ -1,0 +1,48 @@
+﻿@inherits Timereg.Layouts.MainLayoutComponent
+@using Timereg.Pages
+
+
+<RadzenDialog/>
+<RadzenNotification/>
+
+<div class="sidebar sticky " id="sitid">
+    <NavMenu  />
+</div>
+
+<div class="main">
+    <div class="top-row pl-4 sticky navbar navbar-dark" style="background-image: linear-gradient(90deg, #343a40 0%, #0d090e 70%);">
+        @*<button class="navbar-toggler navbar-toggler-dis-2" @onclick="ToggleNavMenu2">
+            <span class="navbar-toggler-icon"></span>
+        </button>*@
+        <RadzenProfileMenu Visible="@(Security.IsAuthenticated())" Click="@Profilemenu0Click">
+            <ChildContent>
+                <RadzenProfileMenuItem Text="Logout" Value="Logout" Icon="power_settings_new">
+                </RadzenProfileMenuItem>
+            </ChildContent>
+            <Template>
+                @if (Security.User != null)
+                {
+                    if (Security.User?.Name.Length > 8)
+                    {
+                        var substring = Security.User?.Name.Substring(0, 8) + "..";
+                        <RadzenLabel Text="@substring">
+                        </RadzenLabel>
+                    }
+                    else
+                    {
+                        var substring = Security.User?.Name;
+                        <RadzenLabel Text="@substring">
+                        </RadzenLabel>
+                    }
+
+                }
+
+            </Template>
+        </RadzenProfileMenu>
+    </div>
+
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>

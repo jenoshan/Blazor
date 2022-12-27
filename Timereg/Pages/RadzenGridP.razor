@@ -1,0 +1,40 @@
+﻿@page "/RadzenGrisP"
+@using Timereg.Data
+@inject SampleService sampleSavice
+<h3>RadzenGrid</h3>
+
+@if (prodects == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    @*<RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"  AllowPaging="true" PageSize="4"
+                    AllowSorting="true" Data="@prodects"  ColumnWidth="150px">
+            <Columns>
+                <RadzenGridColumn  TItem="Product" Property="SampleId" Title="SampleId">  </RadzenGridColumn>
+                <RadzenGridColumn  TItem="Product" Property="SampleId" Title="SampleId">  </RadzenGridColumn>
+                <RadzenGridColumn  TItem="Product" Property="SampleId" Title="SampleId">  </RadzenGridColumn>
+            </Columns>
+
+
+        </RadzenGrid>*@
+    <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4"
+                AllowSorting="true" Data="@prodects" TItem="Sample" ColumnWidth="150px">
+        <Columns>
+            <RadzenGridColumn TItem="Sample" Property="SampleId" Title="SampleId">  </RadzenGridColumn>
+            <RadzenGridColumn TItem="Sample" Property="sampleName" Title="sampleName">  </RadzenGridColumn>
+            <RadzenGridColumn TItem="Sample" Property="Price" Title="Price">  </RadzenGridColumn>
+            @*<RadzenGridColumn TItem="Sample" Property="price" Title="Date">  </RadzenGridColumn>*@
+        </Columns>
+    </RadzenGrid>
+}
+
+@code {
+    IEnumerable<Sample> prodects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        prodects = await Task.Run(() => sampleSavice.ProdectList());
+    }
+}

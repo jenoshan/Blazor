@@ -1,0 +1,102 @@
+﻿
+@page "/Dashboard"
+@layout MainLayout
+@inherits Timereg.Pages.DashboardComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Timereg.Models.Timeregdata
+@using Timereg.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+
+            <RadzenHeading Size="H2" Text=@yeartxt>
+            </RadzenHeading>
+            <RadzenDropDown AllowClear="true" TValue="int" @bind-Value="YearId"
+                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                            FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                            Data="@Years" TextProperty="Yearname" ValueProperty="Yearid" class="black"
+                            Style="margin-left: 15px;" />
+
+
+            @if (monthResults != null)
+            {
+
+                <RadzenDropDown AllowClear="true" TValue="int" @bind-Value="MonthId"
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                Data="@monthResults" TextProperty="MonthName" ValueProperty="MonthNum" class="black" Style="margin-left: 15px;" /><br />
+            }
+
+            <RadzenDropDown AllowClear="true" TValue="int" @bind-Value="companyid"
+                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                            FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                            Data="@getCompany" TextProperty="companyname" ValueProperty="companyid" class="black"
+                            Style="margin-left: 15px;" />
+
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+                <label>
+                    Result for Month : @MontStr
+                </label>
+            </div>
+            <div class="col-md-4">
+                <RadzenButton id="btn btn-warning" Icon="autorenew" style="width: 150px;float :right;" Text="Export to excel" Click="@downloadReport">
+                </RadzenButton>
+            </div>
+        </div>
+
+        <hr />
+        <div class="tabinator">
+            <div id="chartdiv2" class="chartsh"></div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-7 col-sm-12">
+                <h4> Project  with Total hour</h4> <label>Result for Month : @MontStr</label>
+                <RadzenGrid @ref="grid0" AllowFiltering="true" AllowPaging="true" AllowSorting="true" Data="@Projmonth" TItem="Timereg.Models.Timeregdata.TimeusedPerProjMonth" RowSelect="@Grid0RowSelect">
+                    <Columns>
+
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.TimeusedPerProjMonth" Property="month" Title="Month">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.TimeusedPerProjMonth" Property="projectname" Title="Projectname">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.TimeusedPerProjMonth" Property="totalhours" Title="TotalHours" Type="decimal">
+                        </RadzenGridColumn>
+
+                    </Columns>
+                </RadzenGrid>
+            </div>
+            <div class="col-md-5 col-sm-12 ">
+                <h4> User with working hour</h4><label>Result for Month : @MontStr</label>
+                <RadzenGrid @ref="Timegrid0" AllowFiltering="true" AllowPaging="true" AllowSorting="true" Data="@getUserTimeV" TItem="Timereg.Models.Timeregdata.VTimeusedPeruser">
+                    <Columns>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.VTimeusedPeruser" Property="username" Title="username">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.VTimeusedPeruser" Property="Totalminuts" Title="Totalminuts">
+                            <Template Context="data">
+                                @((Math.Floor(100*data.totalminuts/60.00))/100)
+                            </Template>
+                        </RadzenGridColumn>
+
+                    </Columns>
+                </RadzenGrid>
+            </div>
+        </div>
+
+
+    </ChildContent>
+</RadzenContent>
+@code{
+
+}

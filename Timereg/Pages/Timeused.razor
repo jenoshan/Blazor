@@ -1,0 +1,164 @@
+﻿@page "/timeused"
+@layout MainLayout
+@inherits Timereg.Pages.TimeusedComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Timereg.Models.Timeregdata
+@using Timereg.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+<RadzenContent Container="main">
+  <ChildContent>
+    <RadzenHeading Size="H1" Text="Timeused">
+    </RadzenHeading>
+    <div style="height: 100%" class="row">
+      <div class="col-md-6">
+        <RadzenCard style="height: 100%">
+          <ChildContent>
+            <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
+            </RadzenButton>
+            <RadzenGrid @ref="grid0" AllowFiltering="true" AllowPaging="true" AllowSorting="true" Data="@getTimeusedsResult" TItem="Timereg.Models.Timeregdata.Timeused" ColumnWidth="150px" RowSelect="@Grid0RowSelect">
+                <Columns>
+                    <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Timeused" Property="tid" Title="Tid">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Timeused" Property="workdate" FormatString="{0:d}" Title="Workdate">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Timeused" Property="projectid" SortProperty="Project.projectname" FilterProperty="Project.projectname" Title="Project">
+                        <Template Context="data">
+                            @(data.Project?.projectname)
+                        </Template>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Timeused" Property="userid" SortProperty="Employee.username" FilterProperty="Employee.username" Title="Employee">
+                        <Template Context="data">
+                            @(data.Employee?.username)
+                        </Template>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Timeused" Property="description" Title="Description">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Timeused" Property="usedtime" Title="Usedtime">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Timeused" Property="timefrom" FormatString="{0:d}" Title="Timefrom">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Timeused" Property="timeto" FormatString="{0:d}" Title="Timeto">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Timeused" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                        <Template Context="timeregModelsTimeregdataTimeused">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, timeregModelsTimeregdataTimeused))" @onclick:stopPropagation="true">
+                            </RadzenButton>
+                        </Template>
+                    </RadzenGridColumn>
+                </Columns>
+            </RadzenGrid>
+          </ChildContent>
+        </RadzenCard>
+      </div>
+      <div class="col-md-6">
+        <RadzenCard style="height: 100%">
+          <ChildContent>
+            <div class="row">
+              <div class="col-md-12">
+                <RadzenTemplateForm TItem="Timereg.Models.Timeregdata.Timeused" Data="@timeused" Visible="@(timeused != null)" Submit="@Form0Submit">
+                    <ChildContent>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Workdate" Component="workdate" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDatePicker style="display: block; width: 100%" @bind-Value="@(timeused.workdate)" Name="Workdate">
+                                </RadzenDatePicker>
+                                <RadzenRequiredValidator Component="Workdate" Text="workdate is required" style="position: absolute">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Project" Component="projectid" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown Data="@getProjectsResult" TextProperty="Projectname" ValueProperty="id" Placeholder="Choose Project" style="width: 100%" @bind-Value="@(timeused.projectid)" Name="Projectid">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Employee" Component="userid" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown Data="@getEmployeesResult" TextProperty="username" ValueProperty="userid" Placeholder="Choose Employee" style="display: block; width: 100%" @bind-Value="@(timeused.userid)" Name="Userid">
+                                </RadzenDropDown>
+                                <RadzenRequiredValidator Component="Userid" Text="userid is required" style="position: absolute" DefaultValue="0">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Description" Component="Description" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="50" style="width: 100%" @bind-Value="@(timeused.description)" Name="Description">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Usedtime" Component="usedtime" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenLabel Text="@($"{(timeused.usedtime)}")" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Timefrom" Component="Timefrom" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDatePicker style="width: 100%" @bind-Value="@(timeused.timefrom)" Name="Timefrom">
+                                </RadzenDatePicker>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Timeto" Component="Timeto" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDatePicker style="width: 100%" @bind-Value="@(timeused.timeto)" Name="Timeto">
+                                </RadzenDatePicker>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col offset-sm-3">
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Visible="false">
+                                </RadzenButton>
+
+                            </div>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+              </div>
+            </div>
+          </ChildContent>
+        </RadzenCard>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenContent>

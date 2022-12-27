@@ -1,0 +1,113 @@
+﻿@page "/"
+@page "/timeused-calendar"
+@layout MainLayout
+@inherits Timereg.Pages.TimeusedCalendarComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Timereg.Models.Timeregdata
+@using Timereg.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenHeading Size="H4" Text=@title>
+        </RadzenHeading>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenScheduler @ref="scheduler0" Visible="@(timeused == null)" StartProperty="Timefrom" EndProperty="Timeto"
+                                 TextProperty="projectname" Data="@getTimeusedsResult" TItem="Timereg.Models.Timeregdata.VTimeused"
+                                 AppointmentSelect="@Scheduler0AppointmentSelect" SlotSelect="@Scheduler0SlotSelect"
+                                 AppointmentRender="@OnAppointmentRender" SelectedIndex="1" Date="@Lastdate">
+                    <ChildContent>
+                        <RadzenDayView>
+                        </RadzenDayView>
+                        <RadzenWeekView>
+                        </RadzenWeekView>
+                        <RadzenMonthView>
+                        </RadzenMonthView>
+                    </ChildContent>
+                </RadzenScheduler>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm Data="@timeused" Visible="@(timeused != null)" TItem="Timereg.Models.Timeregdata.Timeused" Submit="@AddSubmit">
+                    <ChildContent>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Workdate" Component="workdate" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenLabel style="width: 100%" Text="@(timeused.workdate.ToString("dd.MM.yy"))"
+                                             Name="Workdate">
+                                </RadzenLabel>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Project" Component="projectid" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown Data="@getProjectsResult" TextProperty="projectname" ValueProperty="projectid" Placeholder="Choose Project" style="width: 100%" @bind-Value="@(timeused.projectid)" Name="Projectid">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Usedtime" Component="usedtime" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox   @bind-value="@dtimeused"  Style="margin-bottom: 20px" />
+                              
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Description" Component="Description" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="50" style="width: 100%" @bind-Value="@(timeused.description)" Name="Description">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Time from- to" Component="Timefrom" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenLabel style="width: 50%" Text="@timeused.timefrom.Value.ToString("HH:mm")"
+                                             Name="Timefrom">
+                                </RadzenLabel>
+                                -
+                                <RadzenLabel style="width: 50%" Text="@timeused.timeto.Value.ToString("HH:mm")" Name="Timeto">
+                                </RadzenLabel>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col offset-sm-3">
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Click="@Button2Click">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Text="Delete" Click="@ButtonDeleteClick" Visible="@(timeused.tid>0)">
+                                </RadzenButton>
+                            </div>
+                        </div>
+
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

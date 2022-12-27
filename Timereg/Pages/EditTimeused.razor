@@ -1,0 +1,74 @@
+﻿@page "/edit-timeused/{tid}"
+@layout MainLayout
+@inherits Timereg.Pages.EditTimeusedComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Timereg.Models.Timeregdata
+@using Timereg.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+<RadzenContent Container="main">
+  <ChildContent>
+    <div class="row">
+      <div class="col-md-12">
+        <RadzenTemplateForm Data="@timeused" Visible="@(timeused != null)" TItem="Timereg.Models.Timeregdata.Timeused" Submit="@Form0Submit">
+            <ChildContent>
+                <div style="margin-bottom: 1rem" class="row">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="Start" Component="Timefrom" style="width: 100%">
+                        </RadzenLabel>
+                    </div>
+                    <div class="col-md-9">
+                        <RadzenDatePicker ShowTime="true" style="width: 100%" @bind-Value="@(timeused.timefrom)" Name="Timefrom">
+                        </RadzenDatePicker>
+                    </div>
+                </div>
+                <div style="margin-bottom: 1rem" class="row">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="End" Component="Timeto" style="width: 100%">
+                        </RadzenLabel>
+                    </div>
+                    <div class="col-md-9">
+                        <RadzenDatePicker ShowTime="true" style="width: 100%" @bind-Value="@(timeused.timeto)" Name="Timeto">
+                        </RadzenDatePicker>
+                    </div>
+                </div>
+                <div style="margin-bottom: 1rem" class="row">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="Text" Component="projectid" style="width: 100%">
+                        </RadzenLabel>
+                    </div>
+                    <div class="col-md-9">
+                        <RadzenNumeric style="width: 100%" @bind-Value="@(timeused.projectid)" Name="Projectid">
+                        </RadzenNumeric>
+                    </div>
+                </div>
+                <div style="margin-bottom: 1rem" class="row">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="Description" Component="Description" style="width: 100%">
+                        </RadzenLabel>
+                    </div>
+                    <div class="col-md-9">
+                        <RadzenTextBox MaxLength="50" style="width: 100%" @bind-Value="@(timeused.description)" Name="Description">
+                        </RadzenTextBox>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col offset-sm-3">
+                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
+                        </RadzenButton>
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Text="Delete" Click="@Button2Click">
+                        </RadzenButton>
+                        <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Click="@Button3Click">
+                        </RadzenButton>
+                    </div>
+                </div>
+            </ChildContent>
+        </RadzenTemplateForm>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenContent>

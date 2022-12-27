@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\ExportController.cs" />
+    <Compile Remove="Controllers\ExportTimeregdataController.cs" />
+    <Compile Remove="Migrations\20200923064314_TimeUseDescription.cs" />
+    <Compile Remove="Migrations\20200923064314_TimeUseDescription.Designer.cs" />
+    <Compile Remove="Migrations\20200924100313_VTimeuser.cs" />
+    <Compile Remove="Migrations\20200924100313_VTimeuser.Designer.cs" />
+    <Compile Remove="Migrations\20210920120231_MyFirstMigration.cs" />
+    <Compile Remove="Migrations\20210920120231_MyFirstMigration.Designer.cs" />
+    <Compile Remove="Pages\BlazorModel.razor.cs" />
+    <Compile Remove="Services\Dataset.cs" />
+    <Compile Remove="Services\IDataset.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\BlazorModel.razor" />
+    <Content Remove="Pages\Index.razor" />
+    <Content Remove="Pages\SignUpForm.razor" />
+    <Content Remove="wwwroot\js\DataSAmple.js" />
+    <Content Remove="wwwroot\js\NestedChart.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="DbUpdate\0001_dbupdate.sql" />
+    <None Remove="DbUpdate\0002_dbupdate.sql" />
+    <None Remove="DbUpdate\0003_dbupdate.sql" />
+    <None Remove="DbUpdate\0004_dbupdate.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="DbUpdate\0001_dbupdate.sql" />
+    <EmbeddedResource Include="DbUpdate\0002_dbupdate.sql" />
+    <EmbeddedResource Include="DbUpdate\0003_dbupdate.sql" />
+    <EmbeddedResource Include="DbUpdate\0004_dbupdate.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="dbup-postgresql" Version="4.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
+    <PackageReference Include="Radzen.Blazor" Version="2.11.17" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\assets\images\" />
+  </ItemGroup>
+
+</Project>

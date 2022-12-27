@@ -1,0 +1,119 @@
+﻿@inherits Timereg.Layouts.MainLayoutComponent
+@*mobile view*@
+<div class="top-row pl-4 sticky navbar navbar-dark">
+    <a class="navbar-brand" href="Dashboard">Timereg</a>
+    <div class="vis pl-4 navbar navbar-dark">
+        <RadzenProfileMenu Visible="@(Security.IsAuthenticated())" Click="@Profilemenu0Click">
+            <ChildContent>
+                <RadzenProfileMenuItem Text="Logout" Value="Logout" Icon="power_settings_new">
+                </RadzenProfileMenuItem>
+            </ChildContent>
+            <Template>
+                @if (Security.User != null)
+                {
+                    if (Security.User?.Name.Length > 8)
+                    {
+                        var substring = Security.User?.Name.Substring(0, 8) + "..";
+                        <RadzenLabel Text="@substring">
+                        </RadzenLabel>
+                    }
+                    else
+                    {
+                        var substring = Security.User?.Name;
+                        <RadzenLabel Text="@substring">
+                        </RadzenLabel>
+                    }
+
+                }
+            </Template>
+        </RadzenProfileMenu>
+    </div>
+
+    <button class="navbar-toggler navbar-toggler-dis-1" @onclick="ToggleNavMenu2">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu2">
+    <ul class="nav flex-column">
+        @*Dashboard*@
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Dashboard">
+                <span class="oi oi-home" aria-hidden="true"></span> Dashboard-product
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Dashboarduser">
+                <span class="oi oi-home" aria-hidden="true"></span> Dashboard-user
+            </NavLink>
+        </li>
+        @*project*@
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="project">
+                <span class="oi oi-project" aria-hidden="true"></span> Project
+            </NavLink>
+        </li>
+        @*User Project*@
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="user-project">
+                <span class="oi oi-timer" aria-hidden="true"></span>User Project
+            </NavLink>
+        </li>
+        @*Calendar*@
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="timeused-calendar">
+                <span class="oi oi-calendar" aria-hidden="true"></span> Calendar
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="invoice">
+                <span class="oi oi-dollar" aria-hidden="true"></span> Invoice
+            </NavLink>
+        </li>
+
+        @*<li class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </li>*@
+        @*<li class="nav-item px-3">
+                <NavLink class="nav-link" href="counter">
+                    <span class="oi oi-plus" aria-hidden="true"></span> Counter
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="fetchdata">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="RadzenGrisP">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> SAmple DAta
+                </NavLink>
+            </li>*@
+
+
+        @*timeused*@
+        @*<li class="nav-item px-3">
+                <NavLink class="nav-link" href="timeused">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Timeused
+                </NavLink>
+            </li>*@
+        @*timeused-calendar*@
+
+        @*user-project*@
+
+    </ul>
+</div>
+
+@*@code {
+        private bool collapseNavMenu = false;
+
+        private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+        private void ToggleNavMenu()
+        {
+
+            collapseNavMenu = !collapseNavMenu;
+        }
+    }*@

@@ -1,0 +1,158 @@
+﻿@page "/add-tenentinvoice-config/{companyid}"
+@inherits Timereg.Pages.AddInvoiceComponent
+@attribute [Authorize]
+
+@using Radzen
+@using Radzen.Blazor
+@using Timereg.Models.Timeregdata
+@using Timereg.Models
+@using Microsoft.AspNetCore.Authorization
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm Data="@invoice" Visible="@(invoice != null)" TItem="Timereg.Models.Timeregdata.Invoice" Submit="@Form0Submit">
+                    <ChildContent>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="From Company" Component="tocompanyid" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown Data="@getCompany" TextProperty="companyname" ValueProperty="companyid" Placeholder="Choose from company" style="display: block; width: 100%" @bind-Value="@(invoice.companyid)" Name="companyid">
+                                </RadzenDropDown>
+                                <RadzenRequiredValidator Component="tocompanyid" Text="to company is required" style="position: absolute" DefaultValue="0">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="To Company" Component="companyid" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown Data="@getCompany" TextProperty="companyname" ValueProperty="companyid" Placeholder="Choose company" style="display: block; width: 100%" @bind-Value="@(invoice.tocompanyid)" Name="tocompanyid">
+                                </RadzenDropDown>
+                                <RadzenRequiredValidator Component="companyid" Text="company is required" style="position: absolute" DefaultValue="0">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+                       
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Amount" Component="amount" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenNumeric MaxLength="200" style="width: 100%" @bind-Value="@(invoice.amount)" Name="amount">
+                                </RadzenNumeric>                              
+                                <RadzenRequiredValidator Component="amount" Text="amount is required" DefaultValue="0">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Currency" Component="currencycode" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">                               
+                                <RadzenDropDown Data="@Timereg.Services.AppHelper.CurrencyList()" TextProperty="Value" ValueProperty="Value" Placeholder="Choose currency" style="display: block; width: 100%" @bind-Value="@(invoice.currencycode)" Name="currencycode">
+                                </RadzenDropDown>
+                                <RadzenRequiredValidator Component="currencycode" Text="Currency code is required">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Remark" Component="remark" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox @bind-Value="@(invoice.remark)" Name="remark" style="width: 100%">
+                                </RadzenTextBox>
+
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Invoice Year" Component="invoiceyear" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenNumeric MaxLength="200" style="width: 100%" @bind-Value="@(invoice.invoiceyear)" Name="invoiceyear">
+                                </RadzenNumeric>
+                                <RadzenRequiredValidator Component="invoiceyear" Text="invoiceyear is required" DefaultValue="0">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Invoice Date" Component="validfrom" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDatePicker DateFormat="dd/MM/yyyy" MaxLength="200" style="width: 100%" @bind-Value="@(invoice.invoicedate)" Name="validfrom">
+                                </RadzenDatePicker>
+                                <RadzenRequiredValidator Component="validfrom" Text="invoiceyear is required" DefaultValue="0">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Due Date" Component="duedate" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDatePicker DateFormat="dd/MM/yyyy" MaxLength="200" style="width: 100%" @bind-Value="@(invoice.duedate)" Name="duedate">
+                                </RadzenDatePicker>
+                                <RadzenRequiredValidator Component="duedate" Text="invoiceyear is required" DefaultValue="0">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Billing Period" Component="billingperiod" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox @bind-Value="@(invoice.billingperiod)" Name="billingperiod" style="width: 100%">
+                                </RadzenTextBox>
+
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Include Time" Component="includetime" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox TValue="bool?" @bind-Value="@invoice.includetime" Name="includetime" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col offset-sm-3">
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Click="@Button2Click">
+                                </RadzenButton>
+
+                            </div>
+                        </div>
+
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

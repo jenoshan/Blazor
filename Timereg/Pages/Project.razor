@@ -1,0 +1,63 @@
+﻿@page "/project"
+@*@layout MainLayout*@
+@inherits Timereg.Pages.ProjectComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Timereg.Models.Timeregdata
+@using Timereg.Models
+@using Microsoft.AspNetCore.Authorization
+@*@attribute [Authorize]*@
+
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenHeading Size="H1" Text="Project">
+        </RadzenHeading>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
+                </RadzenButton>
+                <RadzenGrid @ref="grid0" AllowFiltering="true" AllowPaging="true" AllowSorting="true" Data="@getProjectsResult" TItem="Timereg.Models.Timeregdata.Project" RowSelect="@Grid0RowSelect">
+                    <Columns>
+                        @*<RadzenGridColumn TItem="Timereg.Models.Timeregdata.Project" Property="id" Title="Id">
+                            </RadzenGridColumn>*@
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Project" Property="projectname" Title="Projectname">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Project" Property="companyid" SortProperty="company.companyname" FilterProperty="company.companyname" Title="Company">
+                            <Template Context="data">
+                                @(data.company?.companyname)
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Project" Property="projecttype" Title="Project Type">
+                            <Template Context="data">
+                                @if (data.projecttype == 0)
+                                {
+                                    <span>Features</span>
+                                }
+                                else if (data.projecttype == 1)
+                                {
+                                    <span>Bugs</span>
+                                }
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Project" Property="color" Title="Color">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Project" Property="projectcode" Title="description">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Project" Property="validfrom" FormatString="{0:d}" Title="Validfrom">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Project" Property="validto" FormatString="{0:d}" Title="Validto">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Project" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="timeregModelsTimeregdataProject">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, timeregModelsTimeregdataProject))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

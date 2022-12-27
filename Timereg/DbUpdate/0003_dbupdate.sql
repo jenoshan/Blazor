@@ -1,0 +1,1 @@
+alter table invoice Add column currencycode varchar(10);

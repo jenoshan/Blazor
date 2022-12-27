@@ -1,0 +1,57 @@
+﻿@inject BlazorApp3.Services.IModelService ModelService
+@using Timereg.Models
+@using BlazorApp3.Data
+@using BlazorApp3.Services
+
+<h3>SignUpForm</h3>
+
+@if (ShowForm)
+{
+<div class="form-control">
+    <div class="form-group">
+        <label for="first-name">First Name</label>
+        <input @bind="FirstName" type="text" class="form-control" placeholder="Enter your first name" />
+    </div>
+    <div class="form-group">
+        <label for="first-name">First Name</label>
+        <input @bind="LastName" type="text" class="form-control" placeholder="Enter your last name" />
+    </div> 
+    <button @onclick="SubmidForm" class="btn btn-primary">Submit</button>
+    <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
+</div>
+}
+else
+{
+<div class="alert alert-success" role="alert">
+    Thanks @FirstName @LastName,form(Id : @FormId) Submitted successfilly.<br />
+                                                                          <button class=" btn btn-success" @onclick="Done">Done</button>
+</div>   
+}
+@code {
+    [CascadingParameter] ModelParameters Parameters { get; set; }
+    [CascadingParameter] BlazorModel BlazorModel { get; set; }
+
+    bool ShowForm { get; set; } = true;
+    string FirstName { get; set; } = "";
+    string LastName { get; set; } = "";
+    int FormId { get; set; }
+
+    protected override void OnInitialized()
+    {
+        FormId = Parameters.Get<int>("FormId");
+        BlazorModel.SetTitle("Form Title");
+    }
+
+    void SubmidForm()
+    {
+        ShowForm = false;
+    }
+    void Done()
+    {
+        ModelService.Close(ModelResult.Ok("Form Submitted"));
+    }
+    void Cancel()
+    {
+        ModelService.Close(ModelResult.Cancel());
+    }
+}

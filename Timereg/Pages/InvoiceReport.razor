@@ -1,0 +1,198 @@
+﻿@page "/invoice-report/{invoiceid}"
+@inherits Timereg.Pages.InvoiceReportComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Timereg.Models.Timeregdata
+@using Timereg.Models
+@using Microsoft.AspNetCore.Authorization
+@using Timereg.Services;
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="container ">
+            <div class="col-md-12" style="background-color:#0F4C75;">
+                <div class="row" style="padding: 20px 20px 20px 20px;">
+                    <div class="col-md-2 inbtn">
+                        <div id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                             style="background-size:cover;width:50px;height:50px;color:white;">
+                            <img src="/assets/images/@img" width="135" height="100" />
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                        </div>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="left:90%;">
+                            @foreach (var li in AppHelper.LogoList())
+                            {
+                                <a class="dropdown-item" @onclick="()=>SetImage(li.Value)" style="cursor:pointer"> @li.Value</a>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <h1> Invoice</h1>
+                        <button class="btn btn-success" @onclick="downloadMapReport">
+                            <i class="fa fa-print" aria-hidden="true"></i> &nbsp; Print
+                        </button>
+                    </div>
+                    <div class="col-md-3">
+                        <div>
+                            <p style="margin-bottom: 1px;">@fromcompany.companyname</p>
+                            <p style="margin-bottom: 1px;">@fromcompany.address1</p>
+                            <p style="margin-bottom: 1px;">@fromcompany.city</p>
+                            <p style="margin-bottom: 1px;">@fromcompany.country</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-bottom: -30px;">
+                <div class="row" style="padding: 40px 0px 20px 70px;">
+                    <div class="col-md-7">
+                        <div>
+                            <p style="margin-bottom: 1px;">Bill For @tocompany.companyname</p>
+                            <p style="margin-bottom: 1px;">@tocompany.country</p>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div>
+                            <div class="row" style="margin-bottom: -15px;">
+                                <div class="col-6">
+                                    <strong>Invoice NO</strong>
+                                </div>
+                                <div class="col-6">
+                                    <p>#@invoice.invoiceno</p>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: -15px;">
+                                <div class="col-6">
+                                    <strong>Invoice Date</strong>
+                                </div>
+                                <div class="col-6">
+                                    <p>@invoice.invoicedate.ToShortDateString()</p>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: -15px;">
+                                <div class="col-6">
+                                    <strong>Invoice Due Date</strong>
+                                </div>
+                                <div class="col-6">
+                                    <p>@invoice.duedate.ToShortDateString()</p>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: -15px;">
+                                <div class="col-6">
+                                    <strong>Total Amount</strong>
+                                </div>
+                                <div class="col-6">
+                                    @{
+                                        var totamount = Convert.ToInt32(totAmount);
+                                        var Tot_Amount = string.Format("{0:N}", totamount);
+                                    }
+                                    <p>@invoice.currencycode @Tot_Amount</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-12" style="padding: 40px 0px 20px 70px;">
+
+                <RadzenGrid @ref="grid1" AllowFiltering="true" AllowPaging="true" AllowSorting="true" Data="@invoiceline" TItem="Timereg.Models.Timeregdata.Invoiceline">
+                    <Columns>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoiceline" Property="description" Title="Description">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoiceline" Property="qty" Title="Quentity">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoiceline" Property="amount" Title="Amount">
+                            <Template Context="data">
+
+                                @{
+                                    var totamount = Convert.ToInt64(data.amount);
+                                    var Tot_Amounts = string.Format("{0:N}", totamount);
+                                }
+                                <p>@Tot_Amounts</p>
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+
+            </div>
+            <div class="col-md-12" style="background-color: #0F4C75;">
+                <div class="row" style="padding: 30px 0px 20px 50px;">
+                    <div class="col-md-9">
+                        <div>
+                            <p class="text-justify">
+                                <strong>Bank Details : </strong>@fromcompany.bankname<br />
+                                @fromcompany.accountname&nbsp;&nbsp;@fromcompany.branch
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div>
+
+                            <strong>A/C Number</strong>
+                            <h2>@fromcompany.accountno</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="col-md-12" style="background-color: #0F4C75;">
+                <div class="row" style="padding: 30px 0px 20px 50px;">
+                    <div class="col-md-9">
+                        <div>
+                            <p class="text-justify">
+                                <strong>@invoice.remark</strong>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div>
+                            @{
+                                var totamounts = Convert.ToInt32(totAmount);
+                                var Tot_Amounts = string.Format("{0:N}", totamounts);
+                            }
+                            <strong>Total</strong>
+                            <h2>@invoice.currencycode @Tot_Amounts</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ChildContent>
+</RadzenContent>
+
+<style>
+    .borderremove {
+        border: none !important;
+    }
+
+    #watermark {
+        position: fixed;
+        bottom: 336px;
+        right: 35%;
+        opacity: 0.5;
+        z-index: 99;
+        color: white;
+        user-select: none;
+        font-size: 10vh;
+    }
+
+    .inbtn i {
+        position: absolute;
+        top: 90%;
+        left: 20%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        color: black;
+        font-size: 16px;
+        padding: 12px 24px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+</style>

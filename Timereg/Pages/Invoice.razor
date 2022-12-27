@@ -1,0 +1,83 @@
+﻿@page "/invoice"
+@inherits Timereg.Pages.InvoiceComponent
+
+@using Radzen
+@using Radzen.Blazor
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenHeading Size="H1" Text="Invoice"> </RadzenHeading>
+        <div class="row" style="margin-left:0;margin-bottom: 20px;">
+            <RadzenLabel Text="To Company"> </RadzenLabel>
+            <RadzenDropDown AllowClear="true" TValue="int" @bind-Value="companyid"
+                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                            FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                            Data="@getCompany" TextProperty="companyname" ValueProperty="companyid" class="black" Placeholder="choose company" Style="margin-left: 15px; margin-top: 5px;" />
+            &nbsp;&nbsp;
+            <RadzenButton Icon="add_circle_outline" style="margin-top: 5px" Text="New invoice" Click="NewinvoiceClick">
+            </RadzenButton>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenGrid @ref="grid0" AllowFiltering="true" AllowPaging="true" AllowSorting="true" Data="@getInvoice" TItem="Timereg.Models.Timeregdata.Invoice" RowSelect="@Grid0RowSelect">
+                    <Columns>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoice" SortProperty="company.companyname" FilterProperty="company.companyname" Title="From Company">
+                            <Template Context="data">
+                                @(data.Company?.companyname)
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoice" Property="invoiceno" Title="Invoice No">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoice" Property="amount" Title="Amount">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoice" Property="currencycode" Title="Currency">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoice" Property="remark" Title="Remark">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoice" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="timeregModelsTimeregdatainvoice">
+                                <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="visibility" Size="ButtonSize.Medium" Click="@((args) =>goInvoicereport(args, timeregModelsTimeregdatainvoice))" @onclick:stopPropagation="true">
+                                </RadzenButton> 
+                            </Template> 
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoice" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="timeregModelsTimeregdatainvoice">
+                                <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="edit" Size="ButtonSize.Small" Click="@((args) =>EditInvoiceline(args, timeregModelsTimeregdatainvoice))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, timeregModelsTimeregdatainvoice))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <h1 style="margin-bottom: 10px; margin-left: 10px;"> Invoice Line </h1> &nbsp;&nbsp;
+            <RadzenButton Icon="add_circle_outline" Visible=@(GgetInvoiceline != null) style="margin-bottom: 10px" Text="Add" Click="Button1Click">
+            </RadzenButton>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenGrid @ref="grid1" AllowFiltering="true" AllowPaging="true" AllowSorting="true" Data="@GgetInvoiceline" TItem="Timereg.Models.Timeregdata.Invoiceline" RowSelect="@Grid1RowSelect">
+                    <Columns>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoiceline" Property="description" Title="Description">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoiceline" Property="qty" Title="Quentity">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoiceline" Property="amount" Title="Amount">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="Timereg.Models.Timeregdata.Invoiceline" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="timeregModelsTimeregdatainvoiceline">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick0(args, timeregModelsTimeregdatainvoiceline))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+            </div>
+            <br />
+        </div>
+    </ChildContent>
+</RadzenContent>
